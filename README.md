@@ -1,13 +1,13 @@
-# pic2scad
+# Sketch2Print
 
-A Claude Code harness for converting reference images (sketches, photos, diagrams) into 3D-printable OpenSCAD models.
+An agent-assisted workflow for turning reference images into 3D-printable OpenSCAD models and export-ready print files.
 
 ## Features
 
-- **Image to SCAD**: Analyze reference images and generate OpenSCAD code
-- **Visual iteration**: Compare renders with the original reference using Claude's vision
+- **Agent-guided modeling**: Analyze reference images and generate OpenSCAD code with an iterative agent workflow
+- **Visual iteration**: Compare renders with the original reference and refine the model step by step
 - **Version tracking**: Automatic versioning of design iterations (001, 002, ...)
-- **Print export**: Export to 3MF (default) or STL with geometry validation
+- **Printable output**: Export to 3MF (default) or STL with geometry validation
 - **BOSL2 included**: Full BOSL2 library available for advanced modeling
 
 ## Requirements
@@ -42,8 +42,8 @@ A Claude Code harness for converting reference images (sketches, photos, diagram
 ```
 Reference Image → /pic2scad → /iterate (repeat) → /export-print
                       ↓              ↓                    ↓
-                  First .scad   Improved .scad        3MF/STL
-                  + render      + visual diff         + validation
+                 Agent-built    Agent-refined        Printable
+                   .scad           model             3MF/STL
 ```
 
 ## Skills
@@ -57,7 +57,7 @@ Reference Image → /pic2scad → /iterate (repeat) → /export-print
 ## Project Structure
 
 ```
-pic2scad/
+Sketch2Print/
 ├── CLAUDE.md                    # Agent instructions
 ├── references/                  # Reference images (input)
 ├── libs/BOSL2/                  # BOSL2 library (submodule)

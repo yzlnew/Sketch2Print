@@ -1,4 +1,4 @@
-# pic2scad
+# Sketch2Print
 
 从参考图片生成 OpenSCAD 3D 模型并导出可打印文件（3MF/STL）。
 
