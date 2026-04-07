@@ -1,0 +1,14 @@
+# 3D print output files (large binaries)
+*.stl
+*.3mf
+
+# OpenSCAD backup files
+*.scad~
+*~
+
+# macOS
+.DS_Store
+
+# Test files
+test.scad
+test_preview.png
