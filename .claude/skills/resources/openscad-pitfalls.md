@@ -1,93 +1,99 @@
-# OpenSCAD 常见坑与避坑指南
+# OpenSCAD Pitfalls and How to Avoid Them
 
-生成 .scad 代码时容易踩的坑，基于实际迭代经验总结。
+Common issues when generating `.scad` files, based on practical iteration work.
 
-## 1. BOSL2 `orient` 参数导致空白渲染
+## 1. BOSL2 `orient` Can Produce Blank Renders
 
-**现象：** 使用 `cyl(..., orient=BACK)` 等 orient 参数时，渲染输出完全空白。
+**Symptom:** Using `cyl(..., orient=BACK)` or similar `orient` values can result in a completely blank render.
 
-**原因：** `orient` 会改变对象的朝向轴，与 `translate`/`rotate` 组合时容易导致几何体跑到视野外或产生无效几何。
+**Why it happens:** `orient` changes the object's alignment axis. When combined with `translate()` or `rotate()`, it can easily move geometry out of view or create invalid placement.
 
-**正确做法：** 用标准 `rotate([90,0,0])` 代替 `orient`，行为更可预测：
+**Safer approach:** Use an explicit `rotate([90,0,0])` instead. It is much easier to reason about:
+
 ```openscad
-// ❌ 容易出问题
+// Bad: easy to misplace or mis-orient
 translate([0, 5, 50])
     cyl(h=12, d=60, anchor=BOTTOM, orient=BACK);
 
-// ✅ 可预测
+// Better: predictable transform
 translate([0, 5, 50])
     rotate([90, 0, 0])
         cylinder(h=12, d=60, center=true);
 ```
 
-**建议：** BOSL2 的 `orient` 适合在 Attachments 系统内部使用（`attach()`、`position()`）。独立放置时优先用 `rotate()`。
+**Recommendation:** Use BOSL2 `orient` mainly inside the Attachments system (`attach()`, `position()`). For standalone placement, prefer `rotate()`.
 
-## 2. `hull()` 连接不同形状产生意外锥体
+## 2. `hull()` Between Different Shapes Can Create Unexpected Tapers
 
-**现象：** 用 `hull()` 连接顶部圆柱和底部长方体，期望得到平板过渡，实际得到漏斗/锥体形状。
+**Symptom:** You use `hull()` between a cylinder and a rectangular block expecting a flat transition, but get a funnel or tapered body instead.
 
-**原因：** `hull()` 计算的是所有子几何体顶点的凸包。圆柱的圆形截面和长方体的矩形截面凸包会产生渐变过渡。
+**Why it happens:** `hull()` computes the convex hull of all child geometry. A circular profile and a rectangular profile naturally produce a blended convex transition.
 
-**正确做法：** 需要平整连接时，直接用单一 `cube()` 作为背板，不要用 hull 在异形之间过渡：
+**Safer approach:** If you need a flat connecting plate, model that plate directly with a single `cube()` instead of using `hull()` across mismatched shapes:
+
 ```openscad
-// ❌ 产生锥体
+// Bad: creates a tapered transition
 hull() {
     translate([0,0,80]) cylinder(r=30, h=3);
     cube([35, 3, 50], center=true);
 }
 
-// ✅ 统一背板 + 分别附加结构
-cube([65, 3, 110]);  // 背板
-// 在背板前面附加传感器环和充电器盒
+// Better: use a direct backplate
+cube([65, 3, 110]);  // backplate
+// Add the sensor ring and charger box in front of it
 ```
 
-## 3. 首版设计不要过度使用 BOSL2
+## 3. Do Not Overuse BOSL2 in Version 001
 
-**现象：** 首版代码大量使用 BOSL2 的 `cuboid`、`cyl`、`diff()`、`attach()`、`tag("remove")` 等高级功能，调试困难——一旦渲染异常，难以定位是哪个 BOSL2 特性的问题。
+**Symptom:** The first version relies heavily on BOSL2 features such as `cuboid`, `cyl`, `diff()`, `attach()`, and `tag("remove")`, making debugging much harder when rendering fails.
 
-**正确做法：**
-- **首版（001）用原生 OpenSCAD**：`cube()`、`cylinder()`、`difference()`、`union()`、`translate()`、`rotate()`
-- **后续迭代逐步引入 BOSL2**：先确认基本形状正确，再用 BOSL2 加圆角、倒角等细节
-- BOSL2 最适合的场景：`cuboid` 的 `rounding`/`chamfer`、`tube()`、`path_sweep()` 等原生 OpenSCAD 实现复杂的功能
+**Safer approach:**
+- Use native OpenSCAD primitives in version `001`: `cube()`, `cylinder()`, `difference()`, `union()`, `translate()`, `rotate()`
+- Introduce BOSL2 gradually in later iterations after the base shape is confirmed
+- Use BOSL2 where it clearly adds value, such as `rounding`, `chamfer`, `tube()`, or `path_sweep()`
 
 ```openscad
-// 首版：原生 OpenSCAD，确保形状正确
+// First version: plain OpenSCAD for easier debugging
 difference() {
     cube([40, 20, 10], center=true);
     cylinder(h=11, d=6, center=true);
 }
 
-// 后续版本：引入 BOSL2 加细节
+// Later version: BOSL2 for refinement
 diff()
 cuboid([40,20,10], rounding=2, edges="Z") {
     tag("remove") cyl(h=11, d=6);
 }
 ```
 
-## 4. 渲染验证要多角度查看
+## 4. Validate Renders from Multiple Angles
 
-**现象：** 默认渲染角度可能正好看到背板正面，看不到前方的关键结构（环形夹、口袋等）。
+**Symptom:** The default camera angle may show only the front of a backplate and hide important geometry in front of it, such as a ring clamp or pocket.
 
-**正确做法：** 首次渲染后，如果结构被遮挡，用 `--camera` 参数换角度确认：
+**Safer approach:** If key features are hidden, render additional views with `--camera`:
+
 ```bash
-# 默认角度
+# Default angle
 render-scad.sh model.scad --output model.png
 
-# 前方 45° 俯视
+# Front 45-degree elevated view
 render-scad.sh model.scad --output model_front.png --camera 60,60,50,0,8,45,220
 ```
 
-## 5. `difference()` 中的 z-fighting
+## 5. Avoid Z-Fighting in `difference()`
 
-**现象：** 布尔减法后表面闪烁或残留薄片。
+**Symptom:** Boolean subtraction leaves flickering surfaces or thin residual faces.
 
-**正确做法：** 被减去的形状要比被减的主体多出 0.01-0.1mm：
+**Why it happens:** The cutting solid ends exactly flush with the target solid, which can cause ambiguous faces.
+
+**Safer approach:** Extend the subtracting geometry by `0.01` to `0.1` mm beyond the body being cut:
+
 ```openscad
 difference() {
     cube([30, 30, 10]);
-    // ❌ 恰好齐平
+    // Bad: exactly flush
     translate([5, 5, 0]) cube([20, 20, 10]);
-    // ✅ 多出 0.01
+    // Better: extend slightly past the body
     translate([5, 5, -0.01]) cube([20, 20, 10.02]);
 }
 ```

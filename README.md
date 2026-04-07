@@ -70,6 +70,10 @@ Sketch2Print/
     └── resources/               # OpenSCAD cheatsheet, BOSL2 ref, print guidelines
 ```
 
+## References
+
+- Inspired in part by [openscad-agent](https://github.com/iancanderson/openscad-agent)
+
 ## License
 
 MIT
