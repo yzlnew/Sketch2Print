@@ -74,6 +74,8 @@ main_model();
 .claude/skills/iterate/scripts/render-scad.sh <name>_<version>.scad --output <name>_<version>.png
 ```
 
+The default renderer theme is a high-contrast dark scheme to make silhouette, edges, and front/back faces easier to compare against the reference image.
+
 ### 5. Visual Comparison
 
 Read both images and compare:

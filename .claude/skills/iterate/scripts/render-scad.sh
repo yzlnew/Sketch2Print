@@ -8,7 +8,8 @@ set -e
 
 # Default values
 SIZE="800x600"
-COLORSCHEME="Cornfield"
+# High-contrast default theme for clearer silhouette and edge inspection.
+COLORSCHEME="Tomorrow Night"
 RENDER_MODE="preview"
 OUTPUT=""
 CAMERA=""
@@ -67,7 +68,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --output <path>       Output PNG path (default: <input>_preview.png)"
             echo "  --size <WxH>          Image size (default: 800x600)"
             echo "  --camera <params>     Camera position: x,y,z,tx,ty,tz,d"
-            echo "  --colorscheme <name>  Color scheme (default: Cornfield)"
+            echo "  --colorscheme <name>  Color scheme (default: Tomorrow Night)"
             echo "  --render              Full render mode (slower, accurate)"
             echo "  --preview             Preview mode (faster, default)"
             echo "  --backend <name>      Render backend (default: Manifold)"

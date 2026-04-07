@@ -116,6 +116,9 @@ If the default camera angle doesn't match the reference well:
 
 # Full render mode for accurate appearance
 .claude/skills/iterate/scripts/render-scad.sh model.scad --render
+
+# Override the default high-contrast theme if needed
+.claude/skills/iterate/scripts/render-scad.sh model.scad --colorscheme Tomorrow
 ```
 
 ## When to Stop Iterating
