@@ -46,6 +46,16 @@ Reference Image → /pic2scad → /iterate (repeat) → /export-print
                    .scad           model             3MF/STL
 ```
 
+## Gallery
+
+### clawd
+
+Latest iteration: [`iterations/clawd/clawd_004.scad`](iterations/clawd/clawd_004.scad)
+
+| Reference | Latest Render |
+|-----------|---------------|
+| <img src="references/01_clawd.png" alt="clawd reference" width="320"> | <img src="iterations/clawd/clawd_004.png" alt="clawd render" width="320"> |
+
 ## Skills
 
 | Skill | Description |
