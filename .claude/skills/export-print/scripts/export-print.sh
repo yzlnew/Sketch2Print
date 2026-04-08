@@ -11,6 +11,8 @@ OUTPUT=""
 FORMAT="3mf"       # 3MF by default (more modern, supports metadata)
 EXPORT_BOTH=false
 BACKEND="Manifold"
+PARTS=""
+PART_GAP="6"
 
 # OpenSCAD path (macOS default)
 OPENSCAD="/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
@@ -46,6 +48,14 @@ while [[ $# -gt 0 ]]; do
             BACKEND="$2"
             shift 2
             ;;
+        --parts)
+            PARTS="$2"
+            shift 2
+            ;;
+        --gap)
+            PART_GAP="$2"
+            shift 2
+            ;;
         --help|-h)
             echo "Usage: export-print.sh <input.scad> [options]"
             echo ""
@@ -54,6 +64,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --format <fmt>      Export format: 3mf (default) or stl"
             echo "  --both              Export both 3MF and STL"
             echo "  --backend <name>    Render backend (default: Manifold)"
+            echo "  --parts <list>      Export comma-separated parts and merge as one multi-object 3MF"
+            echo "  --gap <mm>          Gap between merged parts in the multi-object 3MF (default: 6)"
             echo ""
             echo "Performs geometry validation during export:"
             echo "  - Non-manifold edges (holes in mesh)"
@@ -64,6 +76,7 @@ while [[ $# -gt 0 ]]; do
             echo "  export-print.sh model.scad"
             echo "  export-print.sh model.scad --format stl"
             echo "  export-print.sh model.scad --both"
+            echo "  export-print.sh model.scad --parts body,left_eye,right_eye"
             exit 0
             ;;
         -*)
@@ -95,11 +108,13 @@ if [[ ! -f "$INPUT" ]]; then
 fi
 
 BASENAME="${INPUT%.scad}"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Function to export a single format
 export_format() {
     local fmt="$1"
     local out="$2"
+    local part_override="${3:-}"
 
     echo "========================================"
     local FMT_UPPER
@@ -114,6 +129,10 @@ export_format() {
 
     if [[ "$fmt" == "stl" ]]; then
         CMD+=("--export-format" "binstl")
+    fi
+
+    if [[ -n "$part_override" ]]; then
+        CMD+=("-D" "part=\"$part_override\"")
     fi
 
     CMD+=("-o" "$out")
@@ -210,8 +229,66 @@ export_format() {
     fi
 }
 
+export_multi_object_3mf() {
+    local out="$1"
+    local temp_dir
+    temp_dir=$(mktemp -d)
+    trap 'rm -rf "$temp_dir"' RETURN
+
+    IFS=',' read -r -a part_array <<< "$PARTS"
+    local exported_parts=()
+
+    echo "========================================"
+    echo "Export Multi-Object 3MF: $(basename "$INPUT")"
+    echo "========================================"
+    echo ""
+
+    for raw_part in "${part_array[@]}"; do
+        local part
+        part=$(echo "$raw_part" | xargs)
+        if [[ -z "$part" ]]; then
+            continue
+        fi
+
+        local part_out="${temp_dir}/${part}.3mf"
+        export_format "3mf" "$part_out" "$part"
+        exported_parts+=("$part_out")
+        echo ""
+    done
+
+    if [[ ${#exported_parts[@]} -eq 0 ]]; then
+        echo "Error: No valid parts were provided"
+        return 1
+    fi
+
+    python3 "$SCRIPT_DIR/merge-3mf.py" --gap "$PART_GAP" -o "$out" "${exported_parts[@]}"
+
+    local size
+    size=$(ls -lh "$out" | awk '{print $5}')
+    echo "========================================"
+    echo "RESULT: Multi-object 3MF exported -> $out"
+    echo "Size: $size"
+    echo "Parts: $PARTS"
+    echo "Gap: ${PART_GAP}mm"
+    echo "========================================"
+}
+
 # Export
-if [[ "$EXPORT_BOTH" == true ]]; then
+if [[ -n "$PARTS" ]]; then
+    if [[ "$FORMAT" != "3mf" ]]; then
+        echo "Error: --parts currently only supports --format 3mf"
+        exit 1
+    fi
+    if [[ "$EXPORT_BOTH" == true ]]; then
+        echo "Error: --parts cannot be combined with --both"
+        exit 1
+    fi
+    if [[ -n "$OUTPUT" ]]; then
+        export_multi_object_3mf "$OUTPUT"
+    else
+        export_multi_object_3mf "${BASENAME}.3mf"
+    fi
+elif [[ "$EXPORT_BOTH" == true ]]; then
     export_format "3mf" "${BASENAME}.3mf"
     echo ""
     export_format "stl" "${BASENAME}.stl"

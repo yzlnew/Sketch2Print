@@ -36,6 +36,15 @@ eye_recess = 1;          // 1mm shallow recess for alignment
 eye_from_side = 3 * pixel;
 eye_from_top = 3 * pixel;  // slightly lower due to taller body
 
+// Export mode:
+// "assembly"     -> assembled preview
+// "print_layout" -> parts laid out separately for printing
+// "body"         -> body only
+// "left_eye"     -> left eye only
+// "right_eye"    -> right eye only
+part = "assembly";
+print_gap = 6;
+
 $fn = 32;
 
 // Main body (print in body color)
@@ -110,7 +119,41 @@ module right_eye() {
         color("black") eye_block();
 }
 
-// Full assembled preview
-body();
-left_eye();
-right_eye();
+module left_eye_part() {
+    color("black") eye_block();
+}
+
+module right_eye_part() {
+    color("black") eye_block();
+}
+
+module assembled_preview() {
+    body();
+    left_eye();
+    right_eye();
+}
+
+// Parts arranged apart for separate printing/export.
+module print_layout() {
+    body();
+
+    translate([body_w + print_gap, 0, 0])
+        eye_block();
+
+    translate([body_w + print_gap + eye_size + print_gap, 0, 0])
+        eye_block();
+}
+
+if (part == "assembly") {
+    assembled_preview();
+} else if (part == "print_layout") {
+    print_layout();
+} else if (part == "body") {
+    body();
+} else if (part == "left_eye") {
+    left_eye_part();
+} else if (part == "right_eye") {
+    right_eye_part();
+} else {
+    assembled_preview();
+}
