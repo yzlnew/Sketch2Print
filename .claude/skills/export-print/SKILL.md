@@ -23,6 +23,8 @@ Use this skill after:
 .claude/skills/export-print/scripts/export-print.sh <input.scad> [options]
 ```
 
+Use the latest `.scad` from `iterations/<project_name>/`.
+
 ### Options
 
 - `--output <path>` — Custom output path (default: `<input>.<format>`)
@@ -34,13 +36,13 @@ Use this skill after:
 
 ```bash
 # Default: export to 3MF
-.claude/skills/export-print/scripts/export-print.sh phone_stand_003.scad
+.claude/skills/export-print/scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad
 
 # Export to STL
-.claude/skills/export-print/scripts/export-print.sh phone_stand_003.scad --format stl
+.claude/skills/export-print/scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad --format stl
 
 # Export both formats
-.claude/skills/export-print/scripts/export-print.sh phone_stand_003.scad --both
+.claude/skills/export-print/scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad --both
 ```
 
 ## Geometry Validation
@@ -57,7 +59,7 @@ If issues are detected, the export still completes but warnings are shown with g
 
 ```
 --- Export Results ---
-Output: phone_stand_003.3mf
+Output: iterations/phone_stand/phone_stand_003.3mf
 Format: 3MF
 Size: 245K
 Backend: Manifold

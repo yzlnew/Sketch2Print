@@ -20,12 +20,12 @@ Compare the current render with the original reference image by delegating the v
 
 Use Glob to find:
 - The reference image in `references/` directory
-- The latest versioned `.scad` and `.png` files
+- The latest versioned `.scad` and `.png` files in the project's iteration directory
 
 ```
-references/<name>.*          # Original reference image
-<name>_NNN.scad              # Latest SCAD source
-<name>_NNN.png               # Latest render
+references/<project_name>.*                                # Original reference image
+iterations/<project_name>/<project_name>_NNN.scad          # Latest SCAD source
+iterations/<project_name>/<project_name>_NNN.png           # Latest render
 ```
 
 ### 2. Visual Comparison via Subagent (Core Step)
@@ -66,7 +66,7 @@ Based on the visual comparison, prioritize changes:
 ### 5. Create the Next Version
 
 ```bash
-.claude/skills/pic2scad/scripts/version-scad.sh <name>
+.claude/skills/pic2scad/scripts/version-scad.sh <project_name>
 ```
 
 Write the improved `.scad` file with the next version number. Document what changed in comments:
@@ -82,7 +82,7 @@ Write the improved `.scad` file with the next version number. Document what chan
 ### 6. Render the New Version
 
 ```bash
-.claude/skills/iterate/scripts/render-scad.sh <name>_<version>.scad --output <name>_<version>.png
+.claude/skills/iterate/scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
 ```
 
 ### 7. Verify Improvement

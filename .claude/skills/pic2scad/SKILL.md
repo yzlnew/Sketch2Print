@@ -28,17 +28,19 @@ Use the Read tool to read the user's reference image (PNG/JPG). Analyze:
 
 If the user provides dimensions, use them. Otherwise, estimate reasonable dimensions based on the object type.
 
-### 2. Determine the Next Version Number
+### 2. Determine the Project Name and Next Version Number
 
 ```bash
-.claude/skills/pic2scad/scripts/version-scad.sh <name>
+.claude/skills/pic2scad/scripts/version-scad.sh <project_name>
 ```
 
-Use a descriptive model name with underscores (e.g., `phone_stand`, `cable_clip`).
+Use a descriptive project name with underscores (e.g., `phone_stand`, `cable_clip`).
+All generated iteration files must live under `iterations/<project_name>/`.
 
 ### 3. Generate the .scad File
 
-Write the OpenSCAD code to the versioned filename (e.g., `phone_stand_001.scad`).
+Write the OpenSCAD code to the versioned filename inside the project iteration directory
+(e.g., `iterations/phone_stand/phone_stand_001.scad`).
 
 **Code structure:**
 ```openscad
@@ -71,7 +73,7 @@ main_model();
 ### 4. Render the Preview
 
 ```bash
-.claude/skills/iterate/scripts/render-scad.sh <name>_<version>.scad --output <name>_<version>.png
+.claude/skills/iterate/scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
 ```
 
 The default renderer theme is a high-contrast dark scheme to make silhouette, edges, and front/back faces easier to compare against the reference image.
@@ -93,12 +95,12 @@ Report your findings to the user with specific observations.
 ## File Naming Convention
 
 ```
-<model-name>_<version>.scad  →  <model-name>_<version>.png
+iterations/<project-name>/<project-name>_<version>.scad  →  iterations/<project-name>/<project-name>_<version>.png
 ```
 
 Examples:
-- `phone_stand_001.scad` → `phone_stand_001.png`
-- `cable_clip_001.scad` → `cable_clip_001.png`
+- `iterations/phone_stand/phone_stand_001.scad` → `iterations/phone_stand/phone_stand_001.png`
+- `iterations/cable_clip/cable_clip_001.scad` → `iterations/cable_clip/cable_clip_001.png`
 
 ## BOSL2 Usage
 

@@ -21,12 +21,12 @@
 
 ```
 references/<name>.<ext>              # 原始参考图片
-<name>_<version>.scad                # OpenSCAD 源码
-<name>_<version>.png                 # 渲染预览
-<name>_<version>.3mf / .stl         # 导出文件
+iterations/<project_name>/<project_name>_<version>.scad   # OpenSCAD 源码
+iterations/<project_name>/<project_name>_<version>.png    # 渲染预览
+iterations/<project_name>/<project_name>_<version>.3mf / .stl   # 导出文件
 ```
 
-示例：`phone_stand_001.scad` → `phone_stand_001.png` → `phone_stand_001.3mf`
+示例：`iterations/phone_stand/phone_stand_001.scad` → `iterations/phone_stand/phone_stand_001.png` → `iterations/phone_stand/phone_stand_001.3mf`
 
 ## 图片分析要点
 

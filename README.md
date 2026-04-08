@@ -54,15 +54,24 @@ Reference Image → /pic2scad → /iterate (repeat) → /export-print
 | `/iterate` | Use a subagent with a custom prompt to compare render vs reference, then create an improved version |
 | `/export-print` | Export to 3MF/STL with geometry validation |
 
+## File Layout
+
+Reference images stay in `references/`.
+All generated iteration files stay in `iterations/<project_name>/`.
+
 ## Project Structure
 
 ```
 Sketch2Print/
 ├── CLAUDE.md                    # Agent instructions
 ├── references/                  # Reference images (input)
+├── iterations/                  # Per-project iteration outputs
 ├── libs/BOSL2/                  # BOSL2 library (submodule)
-├── <model>_NNN.scad             # Generated OpenSCAD files
-├── <model>_NNN.png              # Render previews
+├── iterations/<project>/        # Project-specific output directory
+│   ├── <project>_NNN.scad       # Generated OpenSCAD files
+│   ├── <project>_NNN.png        # Render previews
+│   ├── <project>_NNN.3mf        # Printable export
+│   └── <project>_NNN.stl        # Optional STL export
 └── .claude/skills/
     ├── pic2scad/                # Image analysis + SCAD generation
     ├── iterate/                 # Subagent-guided visual comparison + improvement
