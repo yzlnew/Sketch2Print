@@ -51,7 +51,7 @@ Reference Image → /pic2scad → /iterate (repeat) → /export-print
 | Skill | Description |
 |-------|-------------|
 | `/pic2scad` | Analyze reference image, generate first OpenSCAD version, render preview |
-| `/iterate` | Compare render vs reference, identify differences, create improved version |
+| `/iterate` | Use a subagent with a custom prompt to compare render vs reference, then create an improved version |
 | `/export-print` | Export to 3MF/STL with geometry validation |
 
 ## Project Structure
@@ -65,7 +65,7 @@ Sketch2Print/
 ├── <model>_NNN.png              # Render previews
 └── .claude/skills/
     ├── pic2scad/                # Image analysis + SCAD generation
-    ├── iterate/                 # Visual comparison + improvement
+    ├── iterate/                 # Subagent-guided visual comparison + improvement
     ├── export-print/            # Export + validation
     └── resources/               # OpenSCAD cheatsheet, BOSL2 ref, print guidelines
 ```

@@ -1,9 +1,10 @@
 ---
 name: iterate
-description: Compare the current OpenSCAD render with the original reference image, identify differences, and generate an improved version. Use this to iteratively refine a 3D model until it matches the reference.
+description: Compare the current OpenSCAD render with the original reference image via a subagent using a custom comparison prompt, then generate an improved version. Use this to iteratively refine a 3D model until it matches the reference.
 allowed-tools:
   - Bash(*/render-scad.sh*)
   - Bash(*/version-scad.sh*)
+  - Task
   - Read
   - Write
   - Glob
@@ -11,7 +12,7 @@ allowed-tools:
 
 # iterate — Visual Comparison & Iterative Improvement
 
-Compare the current render with the original reference image using Claude's visual analysis, then generate an improved version.
+Compare the current render with the original reference image by delegating the visual comparison to a subagent with a custom prompt, then generate an improved version.
 
 ## Workflow
 
@@ -27,14 +28,18 @@ references/<name>.*          # Original reference image
 <name>_NNN.png               # Latest render
 ```
 
-### 2. Visual Comparison (Core Step)
+### 2. Visual Comparison via Subagent (Core Step)
 
-Read both images with the Read tool — Claude's multimodal vision will analyze them:
+Delegate the comparison to a subagent using a custom prompt. The subagent should read both images and return a structured comparison the main agent can act on.
+
+The custom prompt should instruct the subagent to:
 
 1. **Read the reference image** — note the target shape, proportions, features
 2. **Read the latest render PNG** — note what the current model looks like
+3. **Compare them systematically** — focus on silhouette, proportions, key features, details, and orientation
+4. **Return actionable modeling feedback** — list what is wrong, what already matches, and the highest-priority fixes
 
-Perform a structured comparison:
+Ask the subagent to return a structured comparison like:
 
 | Aspect | Reference | Current Render | Match? |
 |--------|-----------|----------------|--------|
@@ -43,6 +48,8 @@ Perform a structured comparison:
 | Key features | ... | ... | ✓/✗ |
 | Details | ... | ... | ✓/✗ |
 | Orientation | ... | ... | ✓/✗ |
+
+The main agent should not do the visual comparison itself when this subagent path is available. It should use the subagent's report as the basis for the next modeling changes.
 
 ### 3. Read the Current .scad Code
 
@@ -80,7 +87,7 @@ Write the improved `.scad` file with the next version number. Document what chan
 
 ### 7. Verify Improvement
 
-Read the new render PNG and compare with the reference image again:
+Run the same subagent comparison flow again on the new render and the reference image:
 - Did the changes improve the match?
 - Are there regressions (things that got worse)?
 - What remains to be fixed?
