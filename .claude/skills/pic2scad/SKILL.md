@@ -31,7 +31,7 @@ If the user provides dimensions, use them. Otherwise, estimate reasonable dimens
 ### 2. Determine the Project Name and Next Version Number
 
 ```bash
-.claude/skills/pic2scad/scripts/version-scad.sh <project_name>
+scripts/version-scad.sh <project_name>
 ```
 
 Use a descriptive project name with underscores (e.g., `phone_stand`, `cable_clip`).
@@ -73,7 +73,7 @@ main_model();
 ### 4. Render the Preview
 
 ```bash
-.claude/skills/iterate/scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
+../iterate/scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
 ```
 
 The default renderer theme is a high-contrast dark scheme to make silhouette, edges, and front/back faces easier to compare against the reference image.

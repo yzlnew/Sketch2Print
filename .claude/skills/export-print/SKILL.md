@@ -20,7 +20,7 @@ Use this skill after:
 ## Usage
 
 ```bash
-.claude/skills/export-print/scripts/export-print.sh <input.scad> [options]
+scripts/export-print.sh <input.scad> [options]
 ```
 
 Use the latest `.scad` from `iterations/<project_name>/`.
@@ -36,13 +36,13 @@ Use the latest `.scad` from `iterations/<project_name>/`.
 
 ```bash
 # Default: export to 3MF
-.claude/skills/export-print/scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad
+scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad
 
 # Export to STL
-.claude/skills/export-print/scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad --format stl
+scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad --format stl
 
 # Export both formats
-.claude/skills/export-print/scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad --both
+scripts/export-print.sh iterations/phone_stand/phone_stand_003.scad --both
 ```
 
 ## Geometry Validation

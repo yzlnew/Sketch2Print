@@ -66,7 +66,7 @@ Based on the visual comparison, prioritize changes:
 ### 5. Create the Next Version
 
 ```bash
-.claude/skills/pic2scad/scripts/version-scad.sh <project_name>
+../pic2scad/scripts/version-scad.sh <project_name>
 ```
 
 Write the improved `.scad` file with the next version number. Document what changed in comments:
@@ -82,7 +82,7 @@ Write the improved `.scad` file with the next version number. Document what chan
 ### 6. Render the New Version
 
 ```bash
-.claude/skills/iterate/scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
+scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
 ```
 
 ### 7. Verify Improvement
@@ -116,16 +116,16 @@ If the default camera angle doesn't match the reference well:
 
 ```bash
 # Custom camera angle
-.claude/skills/iterate/scripts/render-scad.sh model.scad --camera 0,0,0,50,0,30,200
+scripts/render-scad.sh model.scad --camera 0,0,0,50,0,30,200
 
 # Larger image for more detail
-.claude/skills/iterate/scripts/render-scad.sh model.scad --size 1200x900
+scripts/render-scad.sh model.scad --size 1200x900
 
 # Full render mode for accurate appearance
-.claude/skills/iterate/scripts/render-scad.sh model.scad --render
+scripts/render-scad.sh model.scad --render
 
 # Override the default high-contrast theme if needed
-.claude/skills/iterate/scripts/render-scad.sh model.scad --colorscheme Tomorrow
+scripts/render-scad.sh model.scad --colorscheme Tomorrow
 ```
 
 ## When to Stop Iterating
