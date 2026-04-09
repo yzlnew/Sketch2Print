@@ -48,13 +48,24 @@ Reference Image → /pic2scad → /iterate (repeat) → /export-print
 
 ## Gallery
 
-### clawd
+### clawd_004
 
-Latest iteration: [`iterations/clawd/clawd_004.scad`](iterations/clawd/clawd_004.scad)
+Source: **Claude Code**  
+Model: [`iterations/clawd/clawd_004.scad`](iterations/clawd/clawd_004.scad)
 
-| Reference | Latest Render |
-|-----------|---------------|
-| <img src="references/01_clawd.png" alt="clawd reference" width="320"> | <img src="iterations/clawd/clawd_004.png" alt="clawd render" width="320"> |
+| Reference | Render |
+|-----------|--------|
+| <img src="references/01_clawd.png" alt="clawd 004 reference" width="320"> | <img src="iterations/clawd/clawd_004.png" alt="clawd 004 render" width="320"> |
+
+### clawd_006
+
+Source: **Codex**  
+Notes: Added a magic hat.  
+Model: [`iterations/clawd/clawd_006.scad`](iterations/clawd/clawd_006.scad)
+
+| Reference | Render |
+|-----------|--------|
+| <img src="references/01_clawd.png" alt="clawd 006 reference with magic hat" width="320"> | <img src="iterations/clawd/clawd_006.png" alt="clawd 006 render" width="320"> |
 
 ## Skills
 
