@@ -28,7 +28,17 @@ Use the Read tool to read the user's reference image (PNG/JPG). Analyze:
 
 If the user provides dimensions, use them. Otherwise, estimate reasonable dimensions based on the object type.
 
-### 2. Determine the Project Name and Next Version Number
+### 2. Decide What Becomes 3D Geometry
+
+Before writing SCAD, separate the physical printable object from 2D graphic/sticker effects:
+
+- Do not model white sticker borders, background gaps, shadows, glow, or decorative highlights as solid geometry unless the user explicitly asks for them.
+- For pixel-art references, convert the subject into chunky 3D volumes with meaningful depth; do not make a flat layered mosaic or thin backplate unless the user asks for a plaque/sticker.
+- Use shallow raised or inset front-surface blocks only for actual object features such as eyes, face marks, wheel hubs, bulb color pixels, labels, or functional details.
+- If a single-piece version would require a large non-reference support or an ugly visible connector, prefer separate printable parts or a discreet rear/hidden connector. Do not distort the front silhouette just to force everything into one body.
+- Check the model from front, side, and 3/4 views so components read as real 3D parts with sane contact relationships, not only as a copied 2D drawing.
+
+### 3. Determine the Project Name and Next Version Number
 
 ```bash
 scripts/version-scad.sh <project_name>
@@ -37,7 +47,7 @@ scripts/version-scad.sh <project_name>
 Use a descriptive project name with underscores (e.g., `phone_stand`, `cable_clip`).
 All generated iteration files must live under `iterations/<project_name>/`.
 
-### 3. Generate the .scad File
+### 4. Generate the .scad File
 
 Write the OpenSCAD code to the versioned filename inside the project iteration directory
 (e.g., `iterations/phone_stand/phone_stand_001.scad`).
@@ -69,8 +79,9 @@ main_model();
 - Use `module` for reusable components
 - Start simple — capture the main shape first, details in later iterations
 - Add `$fn = 64;` or appropriate resolution for curves
+- Give the primary object real printable thickness/depth; reserve shallow layers for surface details
 
-### 4. Render the Preview
+### 5. Render the Preview
 
 ```bash
 ../iterate/scripts/render-scad.sh iterations/<project_name>/<project_name>_<version>.scad --output iterations/<project_name>/<project_name>_<version>.png
@@ -78,7 +89,7 @@ main_model();
 
 The default renderer theme is a high-contrast dark scheme to make silhouette, edges, and front/back faces easier to compare against the reference image.
 
-### 5. Visual Comparison
+### 6. Visual Comparison
 
 Read both images and compare:
 1. Read the reference image again
