@@ -67,6 +67,16 @@ Model: [`iterations/clawd/clawd_006.scad`](iterations/clawd/clawd_006.scad)
 |-----------|--------|
 | <img src="references/01_clawd.png" alt="clawd 006 reference with magic hat" width="320"> | <img src="iterations/clawd/clawd_006.png" alt="clawd 006 render" width="320"> |
 
+### skateboard_charm_005
+
+Source: **Codex**  
+Notes: Deep blocky Clawd figure on a pixel-style skateboard with separated deck, trucks, and wheels.  
+Model: [`iterations/skateboard_charm/skateboard_charm_005.scad`](iterations/skateboard_charm/skateboard_charm_005.scad)
+
+| Reference | Render |
+|-----------|--------|
+| <img src="references/17_clawd_skateboard.png" alt="skateboard charm reference" width="320"> | <img src="iterations/skateboard_charm/skateboard_charm_005.png" alt="skateboard charm render" width="320"> |
+
 ## Skills
 
 | Skill | Description |

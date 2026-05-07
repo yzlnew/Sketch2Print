@@ -1,0 +1,172 @@
+// Skateboard Charm - Version 002
+// Reference: references/17_clawd_skateboard.png
+// Changes from previous version:
+// - Rebuilt as a flat pixel-art relief charm instead of a toy-like skateboard.
+// - Added full white backing silhouette, orange body/shadow blocks, black eyes.
+// - Replaced blue capsule deck and black wheels with maroon pixel deck and yellow wheels.
+
+eps = 0.01;
+$fn = 24;
+
+unit = 3.2;
+grid_w = 28;
+grid_h = 28;
+
+base_h = 2.0;
+relief_h = 1.0;
+detail_h = 1.15;
+
+white = [1.00, 1.00, 1.00];
+orange = [0.83, 0.45, 0.33];
+shadow_orange = [0.70, 0.38, 0.29];
+black = [0.03, 0.03, 0.03];
+maroon = [0.34, 0.11, 0.19];
+wheel_yellow = [0.94, 0.67, 0.33];
+
+// Horizontal pixel runs: [x, y_from_top, width, height].
+base_runs = [
+    [5, 1, 13, 1],
+    [5, 2, 18, 1],
+    [5, 3, 18, 1],
+    [1, 4, 22, 1],
+    [1, 5, 25, 1],
+    [1, 6, 25, 1],
+    [1, 7, 25, 1],
+    [1, 8, 25, 1],
+    [1, 9, 25, 1],
+    [5, 10, 21, 1],
+    [5, 11, 18, 1],
+    [4, 12, 19, 1],
+    [4, 13, 20, 1],
+    [4, 14, 20, 1],
+    [4, 15, 20, 1],
+    [4, 16, 21, 1],
+    [3, 17, 22, 1],
+    [3, 18, 22, 1],
+    [3, 19, 24, 1],
+    [4, 20, 23, 1],
+    [5, 21, 22, 1],
+    [6, 22, 6, 1],
+    [14, 22, 11, 1],
+    [6, 23, 6, 1],
+    [18, 23, 6, 1],
+    [6, 24, 6, 1],
+    [18, 24, 6, 1],
+    [7, 25, 4, 1],
+    [18, 25, 6, 1],
+    [19, 26, 4, 1]
+];
+
+orange_runs = [
+    [9, 2, 8, 1],
+    [9, 3, 13, 1],
+    [9, 4, 13, 1],
+    [5, 5, 17, 1],
+    [5, 6, 6, 1],
+    [13, 6, 6, 1],
+    [21, 6, 4, 1],
+    [5, 7, 6, 1],
+    [13, 7, 6, 1],
+    [21, 7, 4, 1],
+    [5, 8, 20, 1],
+    [9, 9, 16, 1],
+    [9, 10, 13, 1],
+    [9, 11, 13, 1],
+    [9, 12, 13, 1],
+    [9, 13, 13, 1],
+    [10, 14, 2, 1],
+    [16, 14, 7, 1],
+    [10, 15, 2, 1],
+    [18, 15, 2, 1],
+    [21, 15, 2, 1],
+    [11, 16, 2, 1],
+    [18, 16, 2, 1],
+    [21, 16, 2, 1],
+    [11, 17, 2, 1],
+    [19, 17, 2, 1],
+    [22, 17, 2, 1],
+    [19, 18, 2, 1],
+    [22, 18, 2, 1]
+];
+
+shadow_runs = [
+    [6, 2, 3, 1],
+    [6, 3, 3, 1],
+    [6, 4, 3, 1],
+    [2, 5, 3, 1],
+    [2, 6, 3, 1],
+    [2, 7, 3, 1],
+    [2, 8, 3, 1],
+    [6, 9, 3, 1],
+    [6, 10, 3, 1],
+    [6, 11, 3, 1],
+    [6, 12, 3, 1],
+    [5, 13, 4, 1],
+    [5, 14, 2, 1],
+    [5, 15, 3, 1],
+    [6, 16, 2, 1]
+];
+
+eye_runs = [
+    [11, 6, 2, 1],
+    [19, 6, 2, 1],
+    [11, 7, 2, 1],
+    [19, 7, 2, 1]
+];
+
+deck_runs = [
+    [4, 18, 2, 1],
+    [5, 19, 2, 1],
+    [6, 20, 10, 1],
+    [23, 20, 3, 1],
+    [15, 21, 9, 1],
+    [9, 22, 1, 1],
+    [8, 23, 1, 1],
+    [21, 23, 1, 1],
+    [20, 24, 1, 1]
+];
+
+wheel_runs = [
+    [8, 21, 2, 1],
+    [7, 22, 2, 1],
+    [10, 22, 1, 1],
+    [20, 22, 2, 1],
+    [7, 23, 1, 1],
+    [9, 23, 2, 1],
+    [19, 23, 2, 1],
+    [22, 23, 1, 1],
+    [8, 24, 2, 1],
+    [19, 24, 1, 1],
+    [21, 24, 2, 1],
+    [20, 25, 2, 1]
+];
+
+module pixel_run_2d(run) {
+    translate([run[0] * unit, (grid_h - run[1] - run[3]) * unit])
+        square([run[2] * unit, run[3] * unit], center = false);
+}
+
+module run_layer(runs, z, h, layer_color) {
+    color(layer_color)
+        translate([0, 0, z])
+            linear_extrude(height = h)
+                union() {
+                    for (run = runs)
+                        pixel_run_2d(run);
+                }
+}
+
+module charm() {
+    translate([-grid_w * unit / 2, -grid_h * unit / 2, 0]) {
+        run_layer(base_runs, 0, base_h, white);
+
+        // Raised colored pixels sit into the backing with a tiny overlap.
+        run_layer(orange_runs, base_h - eps, relief_h, orange);
+        run_layer(shadow_runs, base_h - eps, relief_h, shadow_orange);
+        run_layer(deck_runs, base_h - eps, detail_h, maroon);
+        run_layer(wheel_runs, base_h - eps, relief_h, wheel_yellow);
+        run_layer(eye_runs, base_h + relief_h - eps, 0.35, black);
+    }
+}
+
+charm();
