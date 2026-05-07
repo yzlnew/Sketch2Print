@@ -77,6 +77,16 @@ Model: [`iterations/skateboard_charm/skateboard_charm_005.scad`](iterations/skat
 |-----------|--------|
 | <img src="references/17_clawd_skateboard.png" alt="skateboard charm reference" width="320"> | <img src="iterations/skateboard_charm/skateboard_charm_005.png" alt="skateboard charm render" width="320"> |
 
+### lightbulb_marker_007
+
+Source: **Codex**  
+Notes: Chunky 3D voxel marker; sticker outline omitted, with shallow raised face and bulb details.  
+Model: [`iterations/lightbulb_marker/lightbulb_marker_007.scad`](iterations/lightbulb_marker/lightbulb_marker_007.scad)
+
+| Reference | Render |
+|-----------|--------|
+| <img src="references/20_clawd_lightbulb.png" alt="lightbulb marker reference" width="320"> | <img src="iterations/lightbulb_marker/lightbulb_marker_007.png" alt="lightbulb marker render" width="320"> |
+
 ## Skills
 
 | Skill | Description |
